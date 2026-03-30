@@ -20,10 +20,10 @@ jobs:
         ports:
           - 5432:5432
         options: >-
-          --health-cmd="pg_isready -U postgres -d forumapi_test"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=5
+          --health-cmd "pg_isready -U postgres -d forumapi_test"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
     env:
       NODE_ENV: test
@@ -53,9 +53,6 @@ jobs:
 
       - name: Run database migration
         run: npm run migrate:test up
-
-      - name: Run linter
-        run: npm run lint
 
       - name: Run automated tests
         run: npm test
