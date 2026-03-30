@@ -1,12 +1,31 @@
 name: Continuous Deployment
 
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - main
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Placeholder deploy step
-        run: echo "Continuous Deployment is temporarily disabled until server and SSH secrets are ready."
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install Railway CLI
+        run: npm install -g @railway/cli
+
+      - name: Deploy to Railway
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+        run: |
+          railway up -c \
+          --service ${{ secrets.RAILWAY_SERVICE }} \
+          --environment ${{ secrets.RAILWAY_ENVIRONMENT }} \
+          --project ${{ secrets.RAILWAY_PROJECT_ID }}
