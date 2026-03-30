@@ -1,29 +1,12 @@
 name: Continuous Deployment
 
 on:
-  push:
-    branches:
-      - main
-      - master
+  workflow_dispatch:
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
 
-      - name: Deploy to server via SSH
-        uses: appleboy/ssh-action@v1.2.0
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: ${{ secrets.SSH_PORT || 22 }}
-          script: |
-            set -e
-            cd ${{ secrets.APP_DIRECTORY }}
-            git pull origin main
-            npm install
-            npm run migrate up
-            pm2 restart forum-api || pm2 start src/app.js --name forum-api
+    steps:
+      - name: Placeholder deploy step
+        run: echo "Continuous Deployment is temporarily disabled until server and SSH secrets are ready."
