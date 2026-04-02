@@ -7,9 +7,11 @@ import comments from '../../Interfaces/http/api/comments/index.js';
 import replies from '../../Interfaces/http/api/replies/index.js';
 import threads from '../../Interfaces/http/api/threads/index.js';
 import createAuthenticationMiddleware from './authentication.js';
+import { strictThreadsRateLimiter } from './rateLimiter.js';
 
 const createServer = async (container) => {
   const app = express();
+  app.set('trust proxy', 1);
 
   // Middleware for parsing JSON
   app.use(express.json());
@@ -18,6 +20,7 @@ const createServer = async (container) => {
 
   // Register routes
   app.use('/users', users(container));
+  app.use('/threads', strictThreadsRateLimiter);
   app.use('/authentications', authentications(container));
   app.use('/threads', threads(container, authentication));
   app.use('/threads/:threadId/comments', comments(container, authentication));

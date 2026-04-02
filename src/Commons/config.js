@@ -28,6 +28,10 @@ const config = {
     refreshTokenKey: process.env.REFRESH_TOKEN_KEY,
     accessTokenAge: process.env.ACCESS_TOKEN_AGE,
   },
+  rateLimit: {
+    threadsWindowMs: process.env.THREADS_RATE_LIMIT_WINDOW_MS,
+    threadsMaxRequests: process.env.THREADS_RATE_LIMIT_MAX_REQUESTS,
+  },
 };
 
 export default config;
