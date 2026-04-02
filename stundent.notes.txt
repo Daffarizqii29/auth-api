@@ -1,0 +1,5 @@
+Link Repository:
+https://github.com/Daffarizqii29/auth-api
+
+Link Forum API (HTTPS):
+https://auth-api-production-c550.up.railway.app

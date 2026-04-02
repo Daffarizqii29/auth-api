@@ -38,6 +38,22 @@ describe('HTTP server', () => {
     expect(response.status).toEqual(404);
   });
 
+
+  it('should response 429 when threads endpoint hit rate limit', async () => {
+    const app = await createServer(container);
+
+    let response;
+    for (let i = 0; i < 11; i += 1) {
+      response = await request(app)
+        .get('/threads/non-existent-thread')
+        .set('X-Forwarded-For', '10.10.10.10');
+    }
+
+    expect(response.status).toEqual(429);
+    expect(response.body.status).toEqual('fail');
+    expect(response.body.message).toEqual('terlalu banyak request ke endpoint threads');
+  });
+
   describe('when POST /users', () => {
     it('should response 201 and persisted user', async () => {
       const requestPayload = {
