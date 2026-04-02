@@ -1,5 +1,4 @@
 import express from 'express';
-import rateLimit from 'express-rate-limit';
 import ClientError from '../../Commons/exceptions/ClientError.js';
 import DomainErrorTranslator from '../../Commons/exceptions/DomainErrorTranslator.js';
 import users from '../../Interfaces/http/api/users/index.js';
@@ -12,22 +11,8 @@ import createAuthenticationMiddleware from './authentication.js';
 const createServer = async (container) => {
   const app = express();
 
-  app.set('trust proxy', 1);
-
-  const threadsRateLimiter = rateLimit({
-    windowMs: 60 * 1000,
-    max: 10,
-    standardHeaders: true,
-    legacyHeaders: false,
-    message: {
-      status: 'fail',
-      message: 'terlalu banyak request ke endpoint threads',
-    },
-  });
-
   // Middleware for parsing JSON
   app.use(express.json());
-  app.use('/threads', threadsRateLimiter);
 
   const authentication = createAuthenticationMiddleware(container);
 
